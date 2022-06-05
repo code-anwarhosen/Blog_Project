@@ -1,0 +1,202 @@
+{% extends 'templates/base.html' %}
+
+{% block title %}Dictionary | Fuse Box{% endblock title %}
+
+{% block css_style %}
+body {
+    background-color: #eee;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300
+}
+
+.height {
+    height: 100vh;
+}
+
+.search {
+    position: relative;
+    box-shadow: 0 0 40px rgba(51, 51, 51, .1)
+}
+
+.search .search_input {
+    height: 55px;
+    text-indent: 25px;
+    border: 2px solid #d6d4d4
+}
+
+.search .search_input:focus {
+    box-shadow: none;
+    border: 2px solid rgb(35, 35, 88)
+}
+
+.search .fa-search {
+    position: absolute;
+    top: 20px;
+    left: 16px
+}
+
+.search .search_btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    height: 44px;
+    width: 100px;
+    background: rgb(125, 125, 170)
+}
+#reco_btn{
+  display: none;
+}
+{% endblock css_style %}
+ 
+ {% block content %}
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <div class="container p-4 p-md-5 mb-4 my-2 bg-light">
+
+      <div class="container">
+        <h2 class="fw-bold text-danger my-3">English to Bangla Dictionary</h2>
+        <div class="row height d-flex justify-content-start align-items-top">
+            <div class="col-md-8">
+                
+              <div class="search"> 
+                  <form id="search_form" name="search_form" method="POST">
+                    {% csrf_token %}
+                    
+                    <input type="text" class="form-control search_input" name="word" id="word" value="" placeholder="Enter a word!" required /> 
+                    <input type="submit" class="search_btn btn btn-primary" value="Search"/>
+                  </form>
+                </div>
+                
+                <div id="recommand">
+                <hr> 
+                <div class="container-fluid"> 
+                  <form method="POST" name="recommand_form" id="recommand_form"> 
+                    {% csrf_token %} 
+                    <input type="hidden" id="recommand_value" name="recommand_value" value='' >
+                    <label for="ynButton" class="h5" id="reco_label" > </label>
+                    <input type="submit" id="reco_btn" class="btn btn-primary btn-sm" value="YES"> 
+                </form> 
+                </div>
+                </div>
+                
+
+                <div id="results_div" class="container my-5">
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <script>
+      // submit main form
+      $(document).on('submit', '#search_form', function(e){
+        e.preventDefault();
+
+        $.ajax({
+          type: 'POST',
+          url: "/dictionary/translate/",
+          data: {
+            word: $('#word').val(),
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+          },
+          success: function(response){
+            //console.log(response);
+            $('#results_div').empty();
+            $('#results_div').append("<hr><h4>* " + response.result + "</h4>");
+            
+            var recommand = response.recommand;
+            recommand = String(recommand);
+            if(recommand === ""){
+              document.getElementById('recommand').style.display = 'none';
+            }else{
+              document.getElementById('recommand').style.display = 'block';
+              document.getElementById('reco_btn').style.display = 'block';
+              document.getElementById('reco_label').innerHTML = "Did you mean \" <span class='text-primary fw-bold'>"+ recommand + "</span> \" insted?";
+              
+              document.getElementById('recommand_value').value = '';
+              document.getElementById('recommand_value').value = recommand;
+            }
+            
+          },
+          error: function(){
+            alert('An error accoured!');
+          },
+        });
+      });
+
+
+
+
+
+
+
+
+      
+
+      // getting data from home views 
+      //$(document).ready(function(){
+      //  setInterval(function(){
+      //    $.ajax({
+      //      type: "GET",
+      //      url: "/dictionary/translate",
+      //      success: function(response){
+      //        console.log(response)
+      //        $('#results_div').empty();
+      //        $('#results_div').append("<hr><h4>" + response.result + "</h4>");
+      //      },
+      //      error: function(response){
+      //        alert("Error getting data!")
+      //      },
+      //    });
+      //  }, 1000);
+      //});
+      
+      // getting data from recommand views
+      //$(document).ready(function(){
+      //  setInterval(function(){
+      //    $.ajax({
+      //      type: "GET",
+      //      url: "/dictionary/recommand",
+      //      success: function(response){
+      //        console.log(response)
+      //        $('#results_div').empty();
+      //        $('#results_div').append("<hr><h4>" + response.result + "</h4>");
+      //      },
+      //      error: function(response){
+      //        alert("Error getting data!")
+      //      },
+      //    });
+      //  }, 1000);
+      //});
+    </script>
+
+
+    <script>
+      $(document).on('submit', '#recommand_form', function(e){
+        e.preventDefault();
+
+        $.ajax({
+          type: 'POST',
+          url: "/dictionary/recommand/",
+          data: {
+            word: $('#recommand_value').val(),
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+          },
+          success: function(response){
+            //console.log(response);
+            $('#results_div').empty();
+            $('#results_div').append("<hr><h4>* " + response.result + "</h4>");
+            
+            document.getElementById('word').value = response.word;
+            document.getElementById('recommand').style.display = 'none';
+            
+          },
+          error: function(){
+            alert('An error accoured!');
+          },
+        });
+      });
+    </script>
+  {% endblock content %}

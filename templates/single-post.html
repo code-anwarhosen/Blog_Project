@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %} {{post.title}} | Fuse Box{% endblock title %}
+
+{% block content %}
+
+<div class="container-fluid my-2 h-100 p-5 bg-opacity-10 text-white bg-info text-center">
+  <h1 class="h1 fw-bold">{{post.title}}</h1>
+  <hr class="container" />
+  <p class="blog-post-meta">Posted on {{post.posted_at|naturaltime}} by <a class="fw-bold link text-decoration-none text-black-50" href="#">{{post.author}}</a></p>
+  <p class="blog-post-meta">{{post.updated_at}}</p>
+</div>
+
+<div class="container p-5 mb-4 bg-light rounded-3 my-2">
+    <div class="col-md-8">
+        
+        <article class="blog-post my-4">
+          {{post.content|safe}}
+        </article>
+  
+        {% comment %} <nav class="blog-pagination my-5 text-center" aria-label="Pagination">
+          <a class="btn btn-outline-primary float-start" href="#">Older</a>
+          <a class="btn btn-outline-secondary float-end">Newer</a>
+        </nav> {% endcomment %}
+  
+      </div>
+</div>
+
+{% endblock content %}

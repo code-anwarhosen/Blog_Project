@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Post | Fuse Box{% endblock title %}
+
+{% block content %}
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+<script>
+    function form_validate()
+    {
+        var title = document.forms['create_post_form']['title'].value;
+        var blog_content = document.forms['create_post_form']['content'].value;
+
+        if (title == null || title == ''){
+            alert('Title is requiered, Please enter a title for your blog post!')
+            return false
+        }
+        else if (blog_content == null || title == ''){
+            alert('Please enter your blog post content!')
+            return false
+        }
+        else{
+            return true
+        }
+    }
+</script>
+
+<div class="container p-5 mb-4 bg-light rounded-3 my-2">
+    <form method="POST" name="create_post_form" action="/create_post/" enctype="multipart/form-data" onsubmit="return form_validate()">
+    {% csrf_token %}
+        <div class="mb-3">
+            <h2 class="fw-bold text-primary">Please fill these fields and submit to create a Blog post!</h2>
+        </div>
+        <div class="mb-3">
+          <label for="title" class="form-label text-primary">Enter Title :</label>
+          <input type="text" class="form-control" id="title" name="title">
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label text-primary">Input image for thumbnail :</label>
+            <input class="form-control text-primary" type="file" id="image" name="image">
+        </div>
+        <div class="mb-3">
+            <label for="blog_content" class="form-label text-primary">Your Content goes here :</label>
+            <textarea class="form-control" id="blog_content" rows="3" name="content"></textarea>
+        </div>
+        <button type="submit" class="btn btn-lg btn-primary">Submit</button>
+      </form>
+</div>
+
+<script>
+    CKEDITOR.replace('blog_content');
+</script>
+
+
+{% endblock content %}

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Home | Fuse Box{% endblock title %}
+
+{% block content %}
+<div class="container">
+<div id="carouselExampleIndicators" class="carousel slide my-2" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <!-- <img src="..." class="d-block w-100" alt="..."> -->
+    <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
+    <div class="col-md-6 px-0">
+      <h1 class="display-4">{{last1.title|safe}}</h1>
+      <p class="blog-post-meta">Posted on {{last1.posted_at|naturaltime}} by <a class="fw-bold text-light text-decoration-none" href="#">{{last1.author}}</a></p>
+      <p class="lead my-3">{{last1.content|safe|truncatewords:30}}</p>
+      <p class="lead mb-0"><a href="single_post/{{last1.slug}}" class="text-white fw-bold btn btn-primary">Continue reading...</a></p>
+    </div>
+  </div>
+    </div>
+    <div class="carousel-item">
+      <!-- <img src="..." class="d-block w-100" alt="..."> -->
+      <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
+        <div class="col-md-6 px-0">
+          <h1 class="display-4">{{last2.title|safe}}</h1>
+          <p class="blog-post-meta">Posted on {{last2.posted_at|naturaltime}} by <a class="fw-bold text-light link text-decoration-none" href="#">{{last2.author}}</a></p>
+          <p class="lead my-3">{{last2.content|safe|truncatewords:30}}</p>
+          <p class="lead mb-0"><a href="single_post/{{last2.slug}}" class="text-white fw-bold btn btn-primary">Continue reading...</a></p>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <!-- <img src="..." class="d-block w-100" alt="..."> -->
+      <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
+        <div class="col-md-6 px-0">
+          <h1 class="display-4">{{last3.title|safe}}</h1>
+          <p class="blog-post-meta">Posted on {{last3.posted_at|naturaltime}} by <a class="fw-bold text-light link text-decoration-none" href="#">{{last3.author}}</a></p>
+          <p class="lead my-3">{{last3.content|safe|truncatewords:30}}</p>
+          <p class="lead mb-0"><a href="single_post/{{last3.slug}}" class="text-white fw-bold btn btn-primary">Continue reading...</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+</div>
+
+
+
+<div class="container">
+    <div class="row mb-2">
+        
+        {% for post in posts reversed %}
+          <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                {% comment %} <strong class="d-inline-block mb-2 text-primary">Articale by {{user.username}}</strong> {% endcomment %}
+                <h3 class="mb-0">{{post.title|safe}}</h3>
+                {% comment %} <div class="mb-1 text-muted">Posted by {{post.author}} <br> posted on {{post.posted_at}}</div> {% endcomment %}
+                <p class="card-text mb-auto">{{post.content|safe|truncatewords:15}}</p>
+                <a href="single_post/{{post.slug}}" class="link"><button class="btn btn-primary">Continue reading</button></a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+    </div>
+</div>
+
+
+
+{% endblock content %}

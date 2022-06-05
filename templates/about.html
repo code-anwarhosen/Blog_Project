@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}About Me | Fuse Box{% endblock title %}
+
+{% block content %}
+<div class="mx-lg-5 card-header bg-gray-100 py-4 border-0">
+    <div class="card-header bg-gray-100 py-4 border-0 text-center">          
+        <div class="text-center my-2"> 
+            <img src="/media/users/avatars/me.jpg" class="rounded" width="200" height="220" alt="avatar">
+        </div>
+        <h3 class="text-primary">Anwar Hasan</h3>
+        <p class="text-primary">Web Developer</p>
+    </div>
+
+    <div class="h-100 p-5 bg-light border rounded-3 text-opacity-50 text-primary">
+        <h2 class="fw-bold">About</h2>
+        <p><span class='fw-bold'>This </span>is a simple Blog Website. You can learn new things here, daily.</p>
+        <p>We're offering you to write about your skill. By writing about your skill you could be more confident about your skill.
+        All you need to do is just Sign-up and Login then click on "Create Post" from navigation bar and you are free to write now.
+        </p>
+        <button class="btn btn-outline-primary" type="button"><a href="/contact_me" class="link text-dark text-decoration-none">Contact Me</a></button>
+      </div>
+</div>
+
+
+{% endblock content %}

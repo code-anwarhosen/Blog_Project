@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us | Fuse Box{% endblock title %}
+
+
+{% block content %}
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+<!-- <script>
+    function form_validate()
+    {
+        var email = document.forms['contact_form']['email'].value;
+        var message = document.forms['contact_form']['message'].value;
+
+        if (email == null || email == ''){
+            alert('Please, enter your email!')
+            return false
+        }
+        else if (message == null || message == ''){
+            alert('Please, enter your message!')
+            return false
+        }
+        else{
+            return true
+        }
+    }
+</script> -->
+
+<div class="container bg-gray-100 my-5">
+    <form id="contact_form" name="contact_form" method="POST" action="/contact_me/" onsubmit="return form_validate()">
+    {% csrf_token %}
+        <h2 class="my-3 text-primary fw-bold">Contact Us:</h2>
+
+        <div class="mb-3">
+            <label for="name" class="form-label text-primary">Name :</label>
+            <input type="text" class="form-control"name="name" id="name" required>
+        </div>
+
+        <div class="mb-3">
+            {% comment %} <label for="phone" class="form-label text-primary">Name :</label> {% endcomment %}
+            <input type="hidden" class="form-control" value='+880 ' name="phone" id="phone">
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label text-primary">Email Address :</label>
+          <input type="email" class="form-control" id="email" name='email' required aria-describedby="emailHelp">
+          <div id="emailHelp" class="form-text text-primary">We'll never share your email with anyone else.</div>
+        </div>
+        
+        <div class="mb-3">
+            <label for="message" class="form-label text-primary">Enter your thought, query or question.</label>
+            <textarea class="form-control" id="message" name='message' rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      
+</div>
+
+
+<!-- <script>
+    $(document).on('submit', '#contact_form', function(event){
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '/contact_me/',
+            data: {
+                name: $('#name').val(),
+                phone: $('#phone').val(),
+                email: $('#email').val(),
+                message: $('#message').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function(){
+                
+            }
+        });
+        document.getElementById('name').value = ''
+        document.getElementById('email').value = ''
+        document.getElementById('message').value = ''
+    });
+</script> -->
+
+{% endblock content %}

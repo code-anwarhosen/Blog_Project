@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile | Fuse Box{% endblock title %}
+
+{% block content %}
+
+<div class="bg-gray-100">
+    <div class="card-header bg-gray-100 py-4 border-0 text-center">          
+        <div class="text-center my-2"> 
+            <!-- <img src="https://d19m59y37dris4.cloudfront.net/directory/2-0-1/img/avatar/avatar-10.jpg" class="rounded" width="250" height="250" alt="avatar"> -->
+            <img src="/media/{{user_profile.avatar}}" class="rounded" width="200" height="220" alt="avatar">
+        </div>
+        <a href="" class="btn btn-sm btn-primary">Change Photo</a> 
+    </div>
+
+    <div class="mx-lg-5 card-header bg-gray-100 py-4 border-0">
+        <h2 class="my-3 text-primary">Personal Info:</h2>
+
+        <p class="text-primary">First Name : <span class="fw-bold text-secondary">{{user.first_name}}</span></p>
+        <p class="text-primary">Last Name : <span class="fw-bold text-secondary">{{user.last_name}}</span></p>
+        <p class="text-primary">User Name : <span class="fw-bold text-secondary">{{user.username}}</span></p>
+        <p class="text-primary">Email Address: <span class="fw-bold text-secondary">{{user.email}}</span></p>
+
+        <p><a class="btn btn-primary" data-bs-toggle="collapse" href="#edit_profile_collapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+              Edit Profile</a></p>
+
+          <div class="collapse" id="edit_profile_collapse">
+            <div class="container card card-body">
+              
+                <form name="profile_form" id="profile_form" enctype="multipart/form-data" method="POST">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-outline">
+                          <label class="form-label" for="image">Input Profile Image :</label>
+                        <input type="file" id="image" onchange="" class="form-control" name="image" value='/media/{{user_profile.avatar}}' />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row my-3">
+                      <div class="col">
+                        <div class="form-outline">
+                            <label class="form-label" for="first_name">First name</label>
+                            <input type="text" id="first_name" class="form-control" name="first_name" value='{{user.first_name}}' required />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row my-3">
+                        <div class="col">
+                          <div class="form-outline">
+                              <label class="form-label" for="last_name">Last Name</label>
+                            <input type="text" id="last_name" class="form-control" name="last_name" value='{{user.last_name}}' required />
+                          </div>
+                        </div>  
+                      </div>
+                  
+                    <!-- Text input -->
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="username">User Name: </label>
+                      <input type="text" id="username" class="form-control" name="username" value='{{user.username}}' title="You couldn't change the username!" disabled />
+                      <div id="username" class="form-text">You're not allowed to change username.</div>
+                    </div>
+                  
+                  
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="email">Email Address: </label>
+                      <input type="email" id="email" placeholder="examole@gmail.com" class="form-control" name="email" value='{{user.email}}' required />
+                    </div>
+                  
+                      <input type="submit" class="btn btn-primary btn-block mb-4" value="Save Changes">
+                    </div>
+                  </form>
+                  <hr>
+            </div>
+          </div>
+
+          <!-- change password section -->
+          <hr>
+          <div class="mx-lg-5 card-header bg-gray-100 py-4 border-0">
+            <p><a class="btn btn-primary" data-bs-toggle="collapse" href="#change_password_collapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+              Change Password</a></p>
+
+              <div class="collapse" id="change_password_collapse">
+                <div class="container card card-body">
+                  
+                    <form>
+                        <div class="row my-3">
+                            <div class="col">
+                              <div class="form-outline">
+                                <label class="form-label" for="old_password">Old Password</label>
+                                <input type="password" id="old_password" class="form-control" name="old_password" value='abc' />
+                              </div>
+                            </div>
+                          </div>
+                      
+                          <div class="row my-3">
+                            <div class="col">
+                              <div class="form-outline">
+                                  <label class="form-label" for="new_password">New Password</label>
+                                <input type="password" id="new_password" class="form-control" name="new_password" value='abc' />
+                              </div>
+                            </div>
+                          </div>
+
+                          <ul>
+                            <li>Password must be atleast 4 charectars.</li>
+                            <li>Password could contain Latter, number and special charectars.</li>
+                          </ul>
+
+                          <div class="row my-3">
+                            <div class="col">
+                              <div class="form-outline">
+                                  <label class="form-label" for="confirm_new_password">Confirm New Password</label>
+                                <input type="password" id="confirm_new_password" class="form-control" name="confirm_new_password" value='abc' />
+                              </div>
+                            </div>
+                          </div>
+                        
+                          <input type="submit" class="btn btn-primary btn-block mb-4" value="Save Changes">
+                        </div>
+                      </form>
+                      <hr>
+                </div>
+              </div>
+          </div>
+
+    </div>
+</div>
+
+<script>
+  $(document).on('submit', '#profile_form', function(event){
+    event.preventDefault();
+
+    $.ajax({
+      type: 'POST',
+      url: '/my_profile/',
+      data: {
+        image: $('#image').val(),
+        first_name: $('#first_name').val(),
+        last_name: $('#last_name').val(),
+        username: $('#username').val(),
+        email: $('#email').val(),
+        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+      },
+      success: function(){
+        console.log('success')
+      }
+    });
+  });
+</script>
+
+{% endblock content %}
